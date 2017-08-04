@@ -1,5 +1,6 @@
 ﻿using Merlin.API;
 using System;
+using System.Text;
 using UnityEngine;
 
 namespace Merlin

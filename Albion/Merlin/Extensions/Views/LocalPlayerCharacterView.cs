@@ -143,11 +143,13 @@ namespace Merlin
 			var internalSpells = instance.LocalPlayerCharacter.te();
 			var spells = new Spell[internalSpells.Length];
 
-			for (int i = 0; i < spells.Length; i++)
+            for (int i = 0; i < spells.Length; i++)
 			{
-				if (internalSpells[i] != null)
-					spells[i] = new Spell(instance, internalSpells[i], (SpellSlotIndex)i);
-			}
+                if (internalSpells[i] != null)
+                {
+                    spells[i] = new Spell(instance, internalSpells[i], (SpellSlotIndex)i);
+                }
+            }
 
 			return spells;
 		}

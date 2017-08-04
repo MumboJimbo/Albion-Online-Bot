@@ -28,7 +28,7 @@ namespace Merlin
 
 		static FightingObjectViewExtensions()
 		{
-			_getEventHandler = typeof(ase).GetMethod("xm");
+			_getEventHandler = typeof(ase).GetMethod("xk");
 		}
 
 		public static FightingObjectView GetAttackTarget(this FightingObjectView instance)
@@ -59,7 +59,7 @@ namespace Merlin
 
 		public static bool IsReadyToCast(this FightingObjectView instance, SpellSlotIndex slot)
 		{
-			var eventHandler = new CastSpellEventHandler(instance.GetEventHandler<auy>());
+			var eventHandler = new CastSpellEventHandler(instance.GetEventHandler<au3>());
 
 			if (eventHandler != null && eventHandler.IsReady((byte)slot))
 				return true;
