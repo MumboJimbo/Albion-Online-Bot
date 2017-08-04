@@ -20,7 +20,7 @@ namespace Merlin
         protected LocalPlayerCharacterView _localPlayerCharacterView;
 
         private DateTime _nextUpdate;
-
+        private bool refresh;
         #endregion Fields
 
         #region Properties and Events
@@ -76,12 +76,29 @@ namespace Merlin
         /// </summary>
         private void Update()
         {
-            if (DateTime.Now < _nextUpdate)
-                return;
+            if (_client.State.ToString().Equals("Playing"))
+            {
+                if (refresh)
+                {
+                    _client = Client.Instance;
+                    _world = World.Instance;
+                    _landscape = Landscape.Instance;
+                    _localPlayerCharacterView = _client.LocalPlayerCharacter;
+                    refresh = false;
+                    Client.Zoom = 130f;
+                    Client.GlobalFog = false;
+                }
+                if (DateTime.Now < _nextUpdate)
+                    return;
 
-            _nextUpdate = DateTime.Now + UpdateDelay;
+                OnUpdate();
 
-            OnUpdate();
+                _nextUpdate = DateTime.Now + UpdateDelay;
+            }
+            else
+            {
+                refresh = true;
+            }
         }
 
         /// <summary>
