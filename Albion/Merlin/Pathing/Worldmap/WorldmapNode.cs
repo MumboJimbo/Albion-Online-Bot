@@ -20,8 +20,6 @@ namespace Merlin.Pathing.Worldmap
 
         #endregion Fields
 
-
-
         #region Constructors and Cleanup
 
         public WorldmapNode(WorldmapCluster cluster, WorldmapNode origin = null, Int32 score = 0, Int32 estimatedScore = 0) : base(cluster, origin)

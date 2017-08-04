@@ -61,8 +61,6 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
 
         #endregion | Helper methods |
 
-
-
         #region | Optimization methods |
 
         /// <summary>

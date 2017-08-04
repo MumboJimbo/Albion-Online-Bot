@@ -19,8 +19,6 @@ namespace Merlin.Profiles.Gatherer
 
         #endregion Fields
 
-
-
         #region Methods
 
         public void Bank()

@@ -19,8 +19,6 @@ namespace Merlin.Profiles.Gatherer
 
         #endregion Properties and Events
 
-
-
         #region Methods
 
         protected override void OnStart()

@@ -15,8 +15,6 @@ namespace Merlin.Pathing.Worldmap
 
         #endregion Fields
 
-
-
         #region Constructors and Cleanup
 
         /// <summary>

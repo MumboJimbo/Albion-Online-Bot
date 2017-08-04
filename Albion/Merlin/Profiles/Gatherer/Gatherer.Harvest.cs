@@ -15,8 +15,6 @@ namespace Merlin.Profiles.Gatherer
 
         #endregion Static
 
-
-
         #region Methods
 
         public bool ValidateHarvestable(HarvestableObjectView resource)

@@ -29,8 +29,6 @@ namespace Merlin
 
         #endregion Properties and Events
 
-
-
         #region Methods
 
         /// <summary>
