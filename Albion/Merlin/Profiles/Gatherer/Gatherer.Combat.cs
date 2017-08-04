@@ -38,12 +38,10 @@ namespace Merlin.Profiles.Gatherer
 
             if (attackTarget != null)
             {
-                //NOTE: WIP combat, need to include all cases etc :) + maybe some intelligence to it
-
                 var selfBuffSpells = spells.Target(gy.SpellTarget.Self).Category(gy.SpellCategory.Buff);
                 if (selfBuffSpells.Any() && !player.IsCastingSpell())
                 {
-                    player.CreateTextEffect("Casting Buff Spell");
+                    player.CreateTextEffect("[Casting Buff Spell]");
                     player.CastOnSelf(selfBuffSpells.FirstOrDefault().SpellSlot);
                     return;
                 }
@@ -51,7 +49,7 @@ namespace Merlin.Profiles.Gatherer
                 var selfDamageSpells = spells.Target(gy.SpellTarget.Self).Category(gy.SpellCategory.Damage);
                 if (selfDamageSpells.Any() && !player.IsCastingSpell())
                 {
-                    player.CreateTextEffect("Casting Damage Spell");
+                    player.CreateTextEffect("[Casting Damage Spell]");
                     player.CastOnSelf(selfDamageSpells.FirstOrDefault().SpellSlot);
                     return;
                 }
@@ -59,28 +57,22 @@ namespace Merlin.Profiles.Gatherer
                 var groundCCSpells = spells.Target(gy.SpellTarget.Ground).Category(gy.SpellCategory.CrowdControl);
                 if (groundCCSpells.Any())
                 {
-                    player.CreateTextEffect("Casting CC Spell");
+                    player.CreateTextEffect("[Casting Ground Spell]");
                     player.CastAt(groundCCSpells.FirstOrDefault().SpellSlot, attackTarget.transform.position);
                     return;
                 }
 
                 // TODO: If buffed, don't use channeled spells.
 
-                var enemyDamageSpells = spells.Target(gy.SpellTarget.Enemy).Category(gy.SpellCategory.Damage);
-                if (enemyDamageSpells.Any() && !player.IsCastingSpell())
-                {
-                    player.CreateTextEffect("Casting Damage Spell");
-                    player.CastOn(enemyDamageSpells.FirstOrDefault().SpellSlot, player.GetAttackTarget());
-                    return;
-                }
-
-                var enemyBuffSpells = spells.Target(gy.SpellTarget.Enemy).Category(gy.SpellCategory.Buff);
-                if (enemyBuffSpells.Any() && !player.IsCastingSpell())
-                {
-                    player.CreateTextEffect("Casting Damage Spell");
-                    player.CastOn(enemyBuffSpells.FirstOrDefault().SpellSlot, player.GetAttackTarget());
-                    return;
-                }
+                /*
+				var enemyDamageSpells = spells.Target(gs.SpellTarget.Enemy).Category(gs.SpellCategory.Damage);
+				if (enemyDamageSpells.Any() && !player.IsCastingSpell())
+				{
+					player.CreateTextEffect("[Casting Damage Spell]");
+					player.CastOn(enemyDamageSpells.FirstOrDefault().SpellSlot, player.GetAttackTarget());
+					return;
+				}
+				*/
 
                 /*
 				var selfDamageSpells = spells.Target(gs.SpellTarget.Self).Category(gs.SpellCategory.Damage);
@@ -115,8 +107,8 @@ namespace Merlin.Profiles.Gatherer
             _harvestPathingRequest = null;
 
             _state.Fire(Trigger.EliminatedAttacker);
-
         }
-            #endregion Methods
+
+        #endregion Methods
     }
 }
