@@ -1,149 +1,140 @@
-﻿using System;
+﻿using Merlin.API;
+using Stateless;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Stateless;
-
-using WorldMap;
-
-using Merlin.API;
 using UnityEngine;
+using WorldMap;
 using YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.AStar;
 
 namespace Merlin.Profiles
 {
-	public class WorldPathingRequest
-	{
-		#region Static
+    public class WorldPathingRequest
+    {
+        #region Fields
 
-		#endregion
+        private Client _client;
+        private World _world;
 
-		#region Fields
+        private WorldmapCluster _origin;
+        private WorldmapCluster _destination;
 
-		private Client _client;
-		private World _world;
+        private List<WorldmapCluster> _path;
 
-		private WorldmapCluster _origin;
-		private WorldmapCluster _destination;
+        private StateMachine<State, Trigger> _state;
 
-		private List<WorldmapCluster> _path;
+        private ClusterPathingRequest _exitPathingRequest;
 
-		private StateMachine<State, Trigger> _state;
+        #endregion Fields
 
-		private ClusterPathingRequest _exitPathingRequest;
+        #region Properties and Events
 
-		#endregion
+        public bool IsRunning => _state.State != State.Finish;
 
-		#region Properties and Events
+        #endregion Properties and Events
 
-		public bool IsRunning => _state.State != State.Finish;
+        #region Constructors and Cleanup
 
-		#endregion
+        public WorldPathingRequest(WorldmapCluster start, WorldmapCluster end, List<WorldmapCluster> path)
+        {
+            _client = Client.Instance;
+            _world = World.Instance;
 
-		#region Constructors and Cleanup
+            _origin = start;
+            _destination = end;
 
-		public WorldPathingRequest(WorldmapCluster start, WorldmapCluster end, List<WorldmapCluster> path)
-		{
-			_client = Client.Instance;
-			_world = World.Instance;
+            _path = path;
 
-			_origin = start;
-			_destination = end;
+            _state = new StateMachine<State, Trigger>(State.Start);
 
-			_path = path;
+            _state.Configure(State.Start)
+                .Permit(Trigger.ApproachDestination, State.Running);
 
-			_state = new StateMachine<State, Trigger>(State.Start);
+            _state.Configure(State.Running)
+                .Permit(Trigger.ReachedDestination, State.Finish);
+        }
 
-			_state.Configure(State.Start)
-				.Permit(Trigger.ApproachDestination, State.Running);
+        #endregion Constructors and Cleanup
 
-			_state.Configure(State.Running)
-				.Permit(Trigger.ReachedDestination, State.Finish);
-		}
+        #region Methods
 
-		#endregion
+        public void Continue()
+        {
+            switch (_state.State)
+            {
+                case State.Start:
+                    {
+                        if (_path.Count > 0)
+                            _state.Fire(Trigger.ApproachDestination);
+                        else
+                            _state.Fire(Trigger.ReachedDestination);
 
-		#region Methods
+                        break;
+                    }
 
-		public void Continue()
-		{
-			switch (_state.State)
-			{
-				case State.Start:
-				{
-					if (_path.Count > 0)
-						_state.Fire(Trigger.ApproachDestination);
-					else
-						_state.Fire(Trigger.ReachedDestination);
+                case State.Running:
+                    {
+                        var nextCluster = _path[0];
 
-					break;
-				}
+                        if (_world.CurrentCluster != nextCluster)
+                        {
+                            if (_exitPathingRequest != null)
+                            {
+                                if (_exitPathingRequest.IsRunning)
+                                {
+                                    _exitPathingRequest.Continue();
+                                }
+                                else
+                                {
+                                    _exitPathingRequest = null;
+                                }
 
-				case State.Running:
-				{
-					var nextCluster = _path[0];
+                                break;
+                            }
 
-					if (_world.CurrentCluster != nextCluster)
-					{
-						if (_exitPathingRequest != null)
-						{
-							if (_exitPathingRequest.IsRunning)
-							{
-								_exitPathingRequest.Continue();
-							}
-							else
-							{
-								_exitPathingRequest = null;
-							}
+                            var player = _client.LocalPlayerCharacter;
+                            var exits = _client.CurrentCluster.GetExits();
 
-							break;
-						}
+                            var exit = exits.FirstOrDefault(e => e.Destination.Internal == nextCluster.Info);
+                            var exitLocation = exit.Internal.v();
 
-						var player = _client.LocalPlayerCharacter;
-						var exits = _client.CurrentCluster.GetExits();
+                            var destination = new Vector3(exitLocation.g(), 0, exitLocation.h());
 
-						var exit = exits.FirstOrDefault(e => e.Destination.Internal == nextCluster.Info);
-						var exitLocation = exit.Internal.v();
+                            if (player.TryFindPath(new ClusterPathfinder(), destination, IsBlocked, out List<Vector3> pathing))
+                                _exitPathingRequest = new ClusterPathingRequest(_client.LocalPlayerCharacter, null, pathing, false);
+                        }
+                        else
+                        {
+                            _path.RemoveAt(0);
+                            _exitPathingRequest = null;
+                        }
 
-						var destination = new Vector3(exitLocation.g(), 0, exitLocation.h());
+                        if (_path.Count > 0)
+                            break;
 
-						if (player.TryFindPath(new ClusterPathfinder(), destination, IsBlocked, out List<Vector3> pathing))
-							_exitPathingRequest = new ClusterPathingRequest(_client.LocalPlayerCharacter, null, pathing, false);
-					}
-					else
-					{
-						_path.RemoveAt(0);
-						_exitPathingRequest = null;
-					}
+                        _state.Fire(Trigger.ReachedDestination);
+                        break;
+                    }
+            }
+        }
 
-					if (_path.Count > 0)
-						break;
+        public bool IsBlocked(Vector2 location)
+        {
+            return (_client.Collision.GetFlag(new Vector3(location.x, 0, location.y), 1.2f) > 0);
+        }
 
-					_state.Fire(Trigger.ReachedDestination);
-					break;
-				}
-			}
-		}
+        #endregion Methods
 
-		public bool IsBlocked(Vector2 location)
-		{
-			return (_client.Collision.GetFlag(new Vector3(location.x, 0, location.y), 1.2f) > 0);
-		}
+        private enum Trigger
+        {
+            ApproachDestination,
+            ReachedDestination,
+        }
 
-		#endregion
-
-		private enum Trigger
-		{
-			ApproachDestination,
-			ReachedDestination,
-		}
-
-		private enum State
-		{
-			Start,
-			Running,
-			Finish
-		}
-	}
+        private enum State
+        {
+            Start,
+            Running,
+            Finish
+        }
+    }
 }

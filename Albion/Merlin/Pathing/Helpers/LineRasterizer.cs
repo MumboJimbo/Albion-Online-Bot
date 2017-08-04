@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
 {
@@ -25,7 +25,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
             yield return new Vector2(x, y);
         }
 
-        #endregion
+        #endregion | Common |
 
         #region | Horizontal line |
 
@@ -67,7 +67,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
             return result;
         }
 
-        #endregion
+        #endregion | Horizontal line |
 
         #region | Vertical line |
 
@@ -106,7 +106,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
             return result;
         }
 
-        #endregion
+        #endregion | Vertical line |
 
         #region | Line |
 
@@ -233,7 +233,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
             }
         }
 
-        #endregion
+        #endregion | Line |
 
         #region | Pathfinding |
 
@@ -242,6 +242,6 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
             return EnumerateLine((int)start.x, (int)start.y, (int)end.x, (int)end.y).All(point => !stopFunction(point));
         }
 
-        #endregion
+        #endregion | Pathfinding |
     }
 }

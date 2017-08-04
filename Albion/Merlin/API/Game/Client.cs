@@ -1,4 +1,17 @@
-﻿using System;
+﻿
+
+
+
+
+
+
+
+
+
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,7 +20,7 @@ using UnityEngine;
 
 namespace Merlin.API
 {
-	/* Internal Type: a6i */
+	/* Internal Type: a6n */
 	public class Client
 	{
 		#region Static
@@ -16,7 +29,7 @@ namespace Merlin.API
 		{
 			get
 			{
-				var internalClient = a6i.s();
+				var internalClient = a6n.s();
 
 				if (internalClient != null)
 					return new Client(internalClient);
@@ -29,7 +42,7 @@ namespace Merlin.API
 
 		#region Fields
 
-		private readonly a6i _client;
+		private readonly a6n _client;
 
 		private readonly World _world;
 		private readonly Collision _collision;
@@ -50,7 +63,7 @@ namespace Merlin.API
         {
             get
             {
-                LocalActorCameraController localActorCameraController = GameObject.FindObjectsOfType<LocalActorCameraController>().FirstOrDefault<LocalActorCameraController>();
+                LocalActorCameraController localActorCameraController = UnityEngine.Object.FindObjectsOfType<LocalActorCameraController>().FirstOrDefault();
                 if (localActorCameraController == null)
                 {
                     return 0f;
@@ -59,7 +72,7 @@ namespace Merlin.API
             }
             set
             {
-                LocalActorCameraController localActorCameraController = GameObject.FindObjectsOfType<LocalActorCameraController>().FirstOrDefault<LocalActorCameraController>();
+                LocalActorCameraController localActorCameraController = UnityEngine.Object.FindObjectsOfType<LocalActorCameraController>().FirstOrDefault();
                 if (localActorCameraController == null)
                 {
                     return;
@@ -98,7 +111,7 @@ namespace Merlin.API
 
 		#region Constructors and Cleanup
 
-		protected Client(a6i client)
+		protected Client(a6n client)
 		{
 			_client = client;
 
@@ -110,7 +123,7 @@ namespace Merlin.API
 
 		#region Methods
 
-		public SimulationObjectView GetEntity(are entity) => _client.a(entity);
+		public SimulationObjectView GetEntity(arj entity) => _client.a(entity);
 
 		public SimulationObjectView GetEntity(long id)
 		{

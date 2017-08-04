@@ -17,7 +17,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.AStar
         /// </summary>
         public Int32 EstimatedScore { get; set; }
 
-        #endregion
+        #endregion | Properties |
 
         #region | Constructors |
 
@@ -34,7 +34,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.AStar
             EstimatedScore = estimatedScore;
         }
 
-        #endregion
+        #endregion | Constructors |
 
         #region | Methods |
 
@@ -48,7 +48,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.AStar
             Origin = origin;
         }
 
-        #endregion
+        #endregion | Methods |
 
         #region << IComparable >>
 
@@ -60,7 +60,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.AStar
             return EstimatedScore.CompareTo(other.EstimatedScore);
         }
 
-        #endregion
+        #endregion << IComparable >>
 
         #region << Object >>
 
@@ -75,6 +75,6 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.AStar
             return string.Format("X = {0}, Y = {1}, Score = {2}, Estimated score = {3}", Value.x, Value.y, Score, EstimatedScore);
         }
 
-        #endregion
+        #endregion << Object >>
     }
 }

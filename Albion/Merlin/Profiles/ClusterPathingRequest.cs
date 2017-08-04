@@ -1,125 +1,116 @@
-﻿using System;
+﻿using Stateless;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Stateless;
-
 using UnityEngine;
 
 namespace Merlin.Profiles
 {
-	public class ClusterPathingRequest
-	{
-		#region Static
+    public class ClusterPathingRequest
+    {
+        #region Fields
 
-		#endregion
+        private bool _useCollider;
 
-		#region Fields
+        private LocalPlayerCharacterView _player;
+        private SimulationObjectView _target;
 
-		private bool _useCollider;
+        private List<Vector3> _path;
 
-		private LocalPlayerCharacterView _player;
-		private SimulationObjectView _target;
+        private StateMachine<State, Trigger> _state;
 
-		private List<Vector3> _path;
+        #endregion Fields
 
-		private StateMachine<State, Trigger> _state;
+        #region Properties and Events
 
-		#endregion
+        public bool IsRunning => _state.State != State.Finish;
 
-		#region Properties and Events
+        #endregion Properties and Events
 
-		public bool IsRunning => _state.State != State.Finish;
+        #region Constructors and Cleanup
 
-		#endregion
+        public ClusterPathingRequest(LocalPlayerCharacterView player, SimulationObjectView target, List<Vector3> path, bool useCollider = true)
+        {
+            _player = player;
+            _target = target;
 
-		#region Constructors and Cleanup
+            _path = path;
 
-		public ClusterPathingRequest(LocalPlayerCharacterView player, SimulationObjectView target, List<Vector3> path, bool useCollider = true)
-		{
-			_player = player;
-			_target = target;
+            _useCollider = useCollider;
 
-			_path = path;
+            _state = new StateMachine<State, Trigger>(State.Start);
 
-			_useCollider = useCollider;
+            _state.Configure(State.Start)
+                .Permit(Trigger.ApprachTarget, State.Running);
 
-			_state = new StateMachine<State, Trigger>(State.Start);
+            _state.Configure(State.Running)
+                .Permit(Trigger.ReachedTarget, State.Finish);
+        }
 
-			_state.Configure(State.Start)
-				.Permit(Trigger.ApprachTarget, State.Running);
+        #endregion Constructors and Cleanup
 
-			_state.Configure(State.Running)
-				.Permit(Trigger.ReachedTarget, State.Finish);
-		}
+        #region Methods
 
-		#endregion
+        public void Continue()
+        {
+            switch (_state.State)
+            {
+                case State.Start:
+                    {
+                        if (_path.Count > 0)
+                            _state.Fire(Trigger.ApprachTarget);
+                        else
+                            _state.Fire(Trigger.ReachedTarget);
 
-		#region Methods
+                        break;
+                    }
 
-		public void Continue()
-		{
-			switch (_state.State)
-			{
-				case State.Start:
-				{
-					if (_path.Count > 0)
-						_state.Fire(Trigger.ApprachTarget);
-					else
-						_state.Fire(Trigger.ReachedTarget);
+                case State.Running:
+                    {
+                        var currentNode = _path[0];
+                        var minimumDistance = 3f;
 
-					break;
-				}
+                        if (_path.Count < 2 && _useCollider)
+                        {
+                            minimumDistance = _target.GetColliderExtents() + _player.GetColliderExtents();
 
-				case State.Running:
-				{
-					var currentNode = _path[0];
-					var minimumDistance = 3f;
+                            var directionToPlayer = (_player.transform.position - _target.transform.position).normalized;
+                            var bufferDistance = directionToPlayer * minimumDistance;
 
-					if (_path.Count < 2 && _useCollider)
-					{
-						minimumDistance = _target.GetColliderExtents() + _player.GetColliderExtents();
+                            currentNode = _target.transform.position + bufferDistance;
+                        }
 
-						var directionToPlayer = (_player.transform.position - _target.transform.position).normalized;
-						var bufferDistance = directionToPlayer * minimumDistance;
+                        var distanceToNode = (_player.transform.position - currentNode).sqrMagnitude;
 
-						currentNode = _target.transform.position + bufferDistance;
-					}
+                        if (distanceToNode < minimumDistance)
+                        {
+                            _path.RemoveAt(0);
+                        }
+                        else
+                        {
+                            _player.RequestMove(currentNode);
+                        }
 
-					var distanceToNode = (_player.transform.position - currentNode).sqrMagnitude;
+                        if (_path.Count > 0)
+                            break;
 
-					if (distanceToNode < minimumDistance)
-					{
-						_path.RemoveAt(0);
-					}
-					else
-					{
-						_player.RequestMove(currentNode);
-					}
+                        _state.Fire(Trigger.ReachedTarget);
+                        break;
+                    }
+            }
+        }
 
-					if (_path.Count > 0)
-						break;
+        #endregion Methods
 
-					_state.Fire(Trigger.ReachedTarget);
-					break;
-				}
-			}
-		}
+        private enum Trigger
+        {
+            ApprachTarget,
+            ReachedTarget,
+        }
 
-		#endregion
-
-		private enum Trigger
-		{
-			ApprachTarget,
-			ReachedTarget,
-		}
-
-		private enum State
-		{
-			Start,
-			Running,
-			Finish
-		}
-	}
+        private enum State
+        {
+            Start,
+            Running,
+            Finish
+        }
+    }
 }

@@ -12,7 +12,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.Dijkstra
 
         private readonly PriorityQueue<TNode> priorityQueue;
 
-        #endregion
+        #endregion | Fields |
 
         #region | Constructors |
 
@@ -24,7 +24,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.Dijkstra
             priorityQueue = new PriorityQueue<TNode>();
         }
 
-        #endregion
+        #endregion | Constructors |
 
         #region << BaseGraphSearchMap >>
 
@@ -60,6 +60,6 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.Dijkstra
             priorityQueue.Clear();
         }
 
-        #endregion
+        #endregion << BaseGraphSearchMap >>
     }
 }

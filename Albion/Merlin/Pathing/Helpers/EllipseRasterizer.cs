@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
 {
@@ -53,7 +53,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
 
             List<Vector2> result = new List<Vector2>
             {
-                new Vector2(-radiusX, radiusY), 
+                new Vector2(-radiusX, radiusY),
                 new Vector2(radiusX, radiusY)
             };
 
@@ -61,8 +61,8 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
 
             while (anomaly >= 0.0)
             {
-                Int32 shiftX = Convert.ToInt32(radiusX*Math.Cos(anomaly));
-                Int32 shiftY = Convert.ToInt32(radiusY*Math.Sin(anomaly));
+                Int32 shiftX = Convert.ToInt32(radiusX * Math.Cos(anomaly));
+                Int32 shiftY = Convert.ToInt32(radiusY * Math.Sin(anomaly));
 
                 Int32 x = radiusX + shiftX;
                 Int32 y = radiusY + shiftY;

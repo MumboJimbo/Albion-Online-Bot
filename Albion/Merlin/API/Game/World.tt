@@ -87,7 +87,8 @@ namespace Merlin.API
 
 			foreach (var cluster in clusters.Values)
 			{
-				if (cluster.Info.ak().ToLower() == name.ToLower())
+                //NOTE: Be sure about this (this is just a guess, because it worked in previous version), if correct, modify values in Clusters.tt
+				if (cluster.Info.an().ToLower() == name.ToLower())
 					return cluster;
 			}
 

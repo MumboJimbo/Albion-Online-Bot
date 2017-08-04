@@ -16,8 +16,8 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
         None = 0x0000,
 
         North = 0x0001,
-        East  = 0x0002,
+        East = 0x0002,
         South = 0x0004,
-        West  = 0x0008,
+        West = 0x0008,
     }
 }

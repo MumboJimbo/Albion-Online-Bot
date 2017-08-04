@@ -1,96 +1,83 @@
-﻿using System;
-using System.Collections;
+﻿using Merlin.Pathing.Worldmap;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Merlin.Pathing.Worldmap;
 using UnityEngine;
 using WorldMap;
 
 namespace Merlin.Profiles.Gatherer
 {
-	public partial class Gatherer
-	{
-		#region Static
+    public partial class Gatherer
+    {
+        #region Static
 
-		public static int CapacityForBanking = 99;
+        public static int CapacityForBanking = 99;
 
-		#endregion
+        #endregion Static
 
-		#region Fields
+        #region Fields
 
-		private WorldPathingRequest _worldPathingRequest;
+        private WorldPathingRequest _worldPathingRequest;
 
-		#endregion
+        #endregion Fields
 
-		#region Properties and Events
+        #region Methods
 
-		#endregion
+        public void Bank()
+        {
+            if (!_localPlayerCharacterView.IsMounted)
+            {
+                if (_localPlayerCharacterView.IsMounting())
+                    return;
 
-		#region Constructors and Cleanup
+                _localPlayerCharacterView.MountOrDismount();
+                return;
+            }
 
-		#endregion
+            if (_localPlayerCharacterView.GetLoadPercent() <= CapacityForBanking)
+            {
+                _localPlayerCharacterView.CreateTextEffect("[Restart]");
+                _state.Fire(Trigger.Restart);
+                return;
+            }
 
-		#region Methods
+            if (_worldPathingRequest != null)
+            {
+                if (_worldPathingRequest.IsRunning)
+                {
+                    if (!HandleMounting(Vector3.zero))
+                        return;
 
-		public void Bank()
-		{
-			if (!_localPlayerCharacterView.IsMounted)
-			{
-				if (_localPlayerCharacterView.IsMounting())
-					return;
+                    _worldPathingRequest.Continue();
+                }
+                else
+                {
+                    _worldPathingRequest = null;
+                }
 
-				_localPlayerCharacterView.MountOrDismount();
-				return;
-			}
+                return;
+            }
 
-			if (_localPlayerCharacterView.GetLoadPercent() <= CapacityForBanking)
-			{
-				_localPlayerCharacterView.CreateTextEffect("[Restart]");
-				_state.Fire(Trigger.Restart);
-				return;
-			}
+            var currentCluster = _world.CurrentCluster;
+            var townCluster = _world.GetCluster("Fort Sterling");
 
-			if (_worldPathingRequest != null)
-			{
-				if (_worldPathingRequest.IsRunning)
-				{
-					if (!HandleMounting(Vector3.zero))
-						return;
+            var path = new List<WorldmapCluster>();
+            var pivotPoints = new List<WorldmapCluster>();
 
-					_worldPathingRequest.Continue();
-				}
-				else
-				{
-					_worldPathingRequest = null;
-				}
+            var worldPathing = new WorldmapPathfinder();
 
-				return;
-			}
+            if (worldPathing.TryFindPath(currentCluster, townCluster, (cluster) => false, out path, out pivotPoints, true, false))
+                _worldPathingRequest = new WorldPathingRequest(currentCluster, townCluster, path);
 
-			var currentCluster = _world.CurrentCluster;
-			var townCluster = _world.GetCluster("Fort Sterling");
+            // TODO: If not in town, get request to exit towards town.
 
-			var path = new List<WorldmapCluster>();
-			var pivotPoints = new List<WorldmapCluster>();
+            // TODO: Get current cluster, is it town?
 
-			var worldPathing = new WorldmapPathfinder();
+            // TODO: Move to bank
 
-			if (worldPathing.TryFindPath(currentCluster, townCluster, (cluster) => false, out path, out pivotPoints, true, false))
-				_worldPathingRequest = new WorldPathingRequest(currentCluster, townCluster, path);
+            // TODO: Near the bank, bank is open?
 
+            // TODO: Bank is open, move items
+        }
 
-			// TODO: If not in town, get request to exit towards town.
-
-			// TODO: Get current cluster, is it town?
-
-			// TODO: Move to bank
-
-			// TODO: Near the bank, bank is open?
-
-			// TODO: Bank is open, move items
-		}
-
-		#endregion
-	}
+        #endregion Methods
+    }
 }

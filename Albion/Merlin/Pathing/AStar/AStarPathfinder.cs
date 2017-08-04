@@ -13,26 +13,26 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.AStar
         /// </summary>
         public AStarPathfinder() : base() { }
 
-		#endregion
+        #endregion | Constructors |
 
-		#region << BaseDijkstraFamilyPathfinder >>
+        #region << BaseDijkstraFamilyPathfinder >>
 
-		/// <summary>
-		/// Determines the distance between neighbor points in an unified grid.
-		/// </summary>
-		/// <param name="start">The start point.</param>
-		/// <param name="end">The neighbor point.</param>
-		/// <returns></returns>
-		/// <exception cref="System.NotSupportedException"></exception>
-		protected override Int32 GetNeighborDistance(Vector2 start, Vector2 end)
-		{
-			return (int)(end - start).sqrMagnitude;
-		}
+        /// <summary>
+        /// Determines the distance between neighbor points in an unified grid.
+        /// </summary>
+        /// <param name="start">The start point.</param>
+        /// <param name="end">The neighbor point.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+        protected override Int32 GetNeighborDistance(Vector2 start, Vector2 end)
+        {
+            return (int)(end - start).sqrMagnitude;
+        }
 
-		/// <summary>
-		/// See <see cref="BaseGraphSearchPathfinder{TNode,TMap}.OnPerformAlgorithm"/> for more details.
-		/// </summary>
-		protected override void OnPerformAlgorithm(AStarNode currentNode, AStarNode neighborNode, Vector2 neighborPosition, Vector2 endPosition, StopFunction<Vector2> stopFunction)
+        /// <summary>
+        /// See <see cref="BaseGraphSearchPathfinder{TNode,TMap}.OnPerformAlgorithm"/> for more details.
+        /// </summary>
+        protected override void OnPerformAlgorithm(AStarNode currentNode, AStarNode neighborNode, Vector2 neighborPosition, Vector2 endPosition, StopFunction<Vector2> stopFunction)
         {
             Int32 neighborScore = currentNode.Score + GetNeighborDistance(currentNode.Value, neighborPosition);
 
@@ -47,6 +47,6 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.AStar
             }
         }
 
-        #endregion
+        #endregion << BaseDijkstraFamilyPathfinder >>
     }
 }

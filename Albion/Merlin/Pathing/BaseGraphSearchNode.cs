@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
 {
@@ -22,7 +21,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
         /// </summary>
         public Boolean IsClosed { get; private set; }
 
-        #endregion
+        #endregion | Properties |
 
         #region | Constructors |
 
@@ -36,7 +35,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
             IsClosed = false;
         }
 
-        #endregion
+        #endregion | Constructors |
 
         #region | Methods |
 
@@ -48,7 +47,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
             IsClosed = true;
         }
 
-        #endregion
+        #endregion | Methods |
 
         #region << IEquatable >>
 
@@ -64,7 +63,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
             return Value.Equals(other.Value);
         }
 
-        #endregion
+        #endregion << IEquatable >>
 
         #region << Object >>
 
@@ -79,6 +78,6 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
             return string.Format("Value = {0}", Value);
         }
 
-        #endregion
+        #endregion << Object >>
     }
 }

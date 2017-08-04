@@ -6,6 +6,11 @@
 
 
 
+
+
+
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +28,7 @@ namespace Merlin.API
 		{
 			get
 			{
-				var internalLandscape = ak8.a().x();
+				var internalLandscape = a6n.s().z();
 
 				if (internalLandscape != null)
 					return new Landscape(internalLandscape);
@@ -40,13 +45,13 @@ namespace Merlin.API
 
 		#region Properties and Events
 
-		private aog _landscape;
+		private a6k _landscape;
 
 		#endregion
 
 		#region Constructors and Cleanup
 
-		protected Landscape(aog landscape)
+		protected Landscape(a6k landscape)
 		{
 			_landscape = landscape;
 		}
@@ -55,9 +60,9 @@ namespace Merlin.API
 
 		#region Methods
 
-		public float GetLandscapeHeight(ajd position)
+		public float GetLandscapeHeight(ajf position)
 		{
-			return _landscape.p(position);
+			return _landscape.d(position);
 		}
 
 		#endregion

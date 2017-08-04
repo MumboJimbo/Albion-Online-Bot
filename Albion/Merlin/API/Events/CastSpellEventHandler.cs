@@ -6,6 +6,11 @@
 
 
 
+
+
+
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +28,7 @@ namespace Merlin.API
 
 		#region Fields
 
-		private auy _internalHandler;
+		private au3 _internalHandler;
 
 		#endregion
 
@@ -33,7 +38,7 @@ namespace Merlin.API
 
 		#region Constructors and Cleanup
 		
-		public CastSpellEventHandler(auy internalHandler)
+		public CastSpellEventHandler(au3 internalHandler)
 		{
 			_internalHandler = internalHandler;
 		}
@@ -44,7 +49,7 @@ namespace Merlin.API
 
 		public bool IsReady(byte index)
 		{
-			return _internalHandler.f(index);
+            return _internalHandler.f(index);
 		}
 
 		#endregion

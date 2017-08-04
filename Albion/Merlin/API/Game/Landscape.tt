@@ -16,7 +16,7 @@ namespace Merlin.API
 		{
 			get
 			{
-				var internalLandscape = <#= internalWorldType.Name #>.<#= internalWorld_getInstance.Name #>().<#= internalLandscape_getInstance.Name #>();
+				var internalLandscape = <#= internalClientType.Name #>.<#= internalClient_getInstance.Name #>().<#= internalLandscape_getInstance.Name #>();
 
 				if (internalLandscape != null)
 					return new Landscape(internalLandscape);
@@ -48,9 +48,9 @@ namespace Merlin.API
 
 		#region Methods
 
-		public float GetLandscapeHeight(ajd position)
+		public float GetLandscapeHeight(ajf position)
 		{
-			return _landscape.p(position);
+			return _landscape.d(position);
 		}
 
 		#endregion

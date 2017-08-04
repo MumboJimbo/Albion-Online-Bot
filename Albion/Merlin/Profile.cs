@@ -1,137 +1,136 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-
+﻿using Merlin.API;
+using System;
 using UnityEngine;
-
-using Merlin.API;
 
 namespace Merlin
 {
-	public abstract class Profile : MonoBehaviour
-	{
-		#region Static
+    public abstract class Profile : MonoBehaviour
+    {
+        #region Static
 
-		public static TimeSpan UpdateDelay = TimeSpan.FromSeconds(0.1d);
+        public static TimeSpan UpdateDelay = TimeSpan.FromSeconds(0.1d);
 
-		#endregion
+        #endregion Static
 
-		#region Fields
+        #region Fields
 
-		protected Client _client;
-		protected World _world;
-		protected Landscape _landscape;
-		protected LocalPlayerCharacterView _localPlayerCharacterView;
+        protected Client _client;
+        protected World _world;
+        protected Landscape _landscape;
+        protected LocalPlayerCharacterView _localPlayerCharacterView;
 
-		private DateTime _nextUpdate;
+        private DateTime _nextUpdate;
+        private bool refresh;
+        #endregion Fields
 
-		#endregion
+        #region Properties and Events
 
-		#region Properties and Events
+        public abstract string Name { get; }
 
-		public abstract string Name { get; }
+        #endregion Properties and Events
 
-		#endregion
+        #region Methods
 
-		#region Constructors and Cleanup
-
-		#endregion
-
-		#region Methods
-
-		/// <summary>
-		/// Called when this instance is enabled.
-		/// </summary>
-		void OnEnable()
-		{
-		    _client = Client.Instance;
-		    _world = World.Instance;
-		    _landscape = Landscape.Instance;
-		    _localPlayerCharacterView = _client.LocalPlayerCharacter;
-		    _nextUpdate = DateTime.Now;
+        /// <summary>
+        /// Called when this instance is enabled.
+        /// </summary>
+        private void OnEnable()
+        {
+            _client = Client.Instance;
+            _world = World.Instance;
+            _landscape = Landscape.Instance;
+            _localPlayerCharacterView = _client.LocalPlayerCharacter;
+            _nextUpdate = DateTime.Now;
         }
 
+        private void Awake()
+        {
+        }
 
-	    void Awake()
-	    {
-	    }
-        
-
-	    void Start()
-	    {
-	        if (_client.State == GameState.Playing)
-	        {
-	            Client.Zoom = 130f;
-	            Client.GlobalFog = false;
-	        }
+        private void Start()
+        {
+            if (_client.State == GameState.Playing)
+            {
+                Client.Zoom = 130f;
+                Client.GlobalFog = false;
+            }
             OnStart();
-                
         }
 
-	    void Stop()
-	    {
-	    }
+        private void Stop()
+        {
+        }
 
         /// <summary>
         /// Called when this instance is disabled.
         /// </summary>
-        void OnDisable()
-		{
-			OnStop();
+        private void OnDisable()
+        {
+            OnStop();
 
-			_client = null;
-		}
+            _client = null;
+        }
 
-		/// <summary>
-		/// Called when this instance is updated.
-		/// </summary>
-		void Update()
-		{
+        /// <summary>
+        /// Called when this instance is updated.
+        /// </summary>
+        private void Update()
+        {
+            if (_client.State.ToString().Equals("Playing"))
+            {
+                if (refresh)
+                {
+                    _client = Client.Instance;
+                    _world = World.Instance;
+                    _landscape = Landscape.Instance;
+                    _localPlayerCharacterView = _client.LocalPlayerCharacter;
+                    refresh = false;
+                    Client.Zoom = 130f;
+                    Client.GlobalFog = false;
+                }
+                if (DateTime.Now < _nextUpdate)
+                    return;
 
-            if (DateTime.Now < _nextUpdate)
-				return;
+                OnUpdate();
 
-           _nextUpdate = DateTime.Now + UpdateDelay;
-
-            OnUpdate();
+                _nextUpdate = DateTime.Now + UpdateDelay;
+            }
+            else
+            {
+                refresh = true;
+            }
         }
 
         /// <summary>
         /// Called when the GUI is rendered.
         /// </summary>
-        void OnGUI()
-		{
-		}
+        private void OnGUI()
+        {
+        }
 
+        /// <summary>
+        /// Called when this instance is started.
+        /// </summary>
+        protected virtual void OnStart()
+        {
+        }
 
-		/// <summary>
-		/// Called when this instance is started.
-		/// </summary>
-		protected virtual void OnStart()
-		{
-		}
+        /// <summary>
+        /// Called when this instance is stopped.
+        /// </summary>
+        protected virtual void OnStop()
+        {
+        }
 
-		/// <summary>
-		/// Called when this instance is stopped.
-		/// </summary>
-		protected virtual void OnStop()
-		{
-		}
+        protected virtual void OnUpdate()
+        {
+        }
 
+        #endregion Methods
+    }
 
-		protected virtual void OnUpdate()
-		{
-		}
-
-		#endregion
-	}
-
-	public class RestartInstruction : CustomYieldInstruction
-	{
-		public override bool keepWaiting => false;
-	}
+    public class RestartInstruction : CustomYieldInstruction
+    {
+        public override bool keepWaiting => false;
+    }
 }
