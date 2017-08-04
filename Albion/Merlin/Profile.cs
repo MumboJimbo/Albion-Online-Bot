@@ -76,7 +76,7 @@ namespace Merlin
         /// </summary>
         private void Update()
         {
-            if (_client.State.ToString().Equals("Playing"))
+            if (_client.State == GameState.Playing)
             {
                 if (refresh)
                 {
