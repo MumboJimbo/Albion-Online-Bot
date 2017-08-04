@@ -1,100 +1,89 @@
-﻿using System;
+﻿using Merlin.API;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using WorldMap;
 using YinYang.CodeProject.Projects.SimplePathfinding.Helpers;
 using YinYang.CodeProject.Projects.SimplePathfinding.PathFinders;
 
-using WorldMap;
-
-using Merlin.API;
-
 namespace Merlin.Pathing.Worldmap
 {
-	public class WorldmapPathfinder : BasePathfinder<WorldmapNode, WorldmapMap, WorldmapCluster>
-	{
-		#region Static
+    public class WorldmapPathfinder : BasePathfinder<WorldmapNode, WorldmapMap, WorldmapCluster>
+    {
+        #region Fields
 
-		#endregion
+        private World _world;
 
-		#region Fields
+        #endregion Fields
 
-		private World _world;
 
-		#endregion
 
-		#region Properties and Events
+        #region Constructors and Cleanup
 
-		#endregion
+        public WorldmapPathfinder()
+        {
+            _world = World.Instance;
+        }
 
-		#region Constructors and Cleanup
+        #endregion Constructors and Cleanup
 
-		public WorldmapPathfinder()
-		{
-			_world = World.Instance;
-		}
+        #region Methods
 
-		#endregion
+        /// <summary>
+        /// See <see cref="BaseGraphSearchPathfinder{TNode,TMap}.OnEnumerateNeighbors"/> for more details.
+        /// </summary>
+        protected override IEnumerable<WorldmapCluster> OnEnumerateNeighbors(WorldmapNode currentNode, StopFunction<WorldmapCluster> stopFunction)
+        {
+            List<WorldmapCluster> result = new List<WorldmapCluster>();
 
-		#region Methods
+            var currentCluster = new Cluster(currentNode.Value.Info);
+            var currentClusterExits = currentCluster.GetExits();
 
-		/// <summary>
-		/// See <see cref="BaseGraphSearchPathfinder{TNode,TMap}.OnEnumerateNeighbors"/> for more details.
-		/// </summary>
-		protected override IEnumerable<WorldmapCluster> OnEnumerateNeighbors(WorldmapNode currentNode, StopFunction<WorldmapCluster> stopFunction)
-		{
-			List<WorldmapCluster> result = new List<WorldmapCluster>();
+            foreach (var exit in currentClusterExits)
+            {
+                if (exit.Kind != ake.Kind.Cluster)
+                    continue;
 
-			var currentCluster = new Cluster(currentNode.Value.Info);
-			var currentClusterExits = currentCluster.GetExits();
+                var exitCluster = _world.GetCluster(exit.Destination.Internal);
 
-			foreach (var exit in currentClusterExits)
-			{
-				if (exit.Kind != akc.Kind.Cluster)
-					continue;
+                if (exitCluster != null)
+                    result.Add(exitCluster);
+            }
 
-				var exitCluster = _world.GetCluster(exit.Destination.Internal);
+            return result;
+        }
 
-				if (exitCluster != null)
-					result.Add(exitCluster);
-			}
+        protected Int32 GetScore(WorldmapCluster start, WorldmapCluster end)
+        {
+            var cluster = new Cluster(end.Info);
+            var pvpRules = cluster.PvPRules;
 
-			return result;
-		}
+            switch (pvpRules)
+            {
+                case iy.PvpRules.PvpForced: return Int32.MaxValue;
+                case iy.PvpRules.PvpAllowed: return 1;
+            }
 
-		protected Int32 GetScore(WorldmapCluster start, WorldmapCluster end)
-		{
-			var cluster = new Cluster(end.Info);
-			var pvpRules = cluster.PvPRules;
+            return 1;
+        }
 
-			switch (pvpRules)
-			{
-				case iy.PvpRules.PvpForced: return Int32.MaxValue;
-				case iy.PvpRules.PvpAllowed: return 1;
-			}
+        /// <summary>
+        /// See <see cref="BaseGraphSearchPathfinder{TNode,TMap}.OnPerformAlgorithm"/> for more details.
+        /// </summary>
+        protected override void OnPerformAlgorithm(WorldmapNode currentNode, WorldmapNode neighborNode, WorldmapCluster neighborPosition, WorldmapCluster endPosition, StopFunction<WorldmapCluster> stopFunction)
+        {
+            Int32 neighborScore = currentNode.Score + GetScore(currentNode.Value, neighborPosition);
 
-			return 1;
-		}
+            // opens node at this position
+            if (neighborNode == null)
+            {
+                Map.OpenNode(neighborPosition, currentNode, neighborScore, neighborScore);
+            }
+            else if (neighborScore < neighborNode.Score)
+            {
+                neighborNode.Update(neighborScore, neighborScore, currentNode);
+            }
+        }
 
-		/// <summary>
-		/// See <see cref="BaseGraphSearchPathfinder{TNode,TMap}.OnPerformAlgorithm"/> for more details.
-		/// </summary>
-		protected override void OnPerformAlgorithm(WorldmapNode currentNode, WorldmapNode neighborNode, WorldmapCluster neighborPosition, WorldmapCluster endPosition, StopFunction<WorldmapCluster> stopFunction)
-		{
-			Int32 neighborScore = currentNode.Score + GetScore(currentNode.Value, neighborPosition);
-
-			// opens node at this position
-			if (neighborNode == null)
-			{
-				Map.OpenNode(neighborPosition, currentNode, neighborScore, neighborScore);
-			}
-			else if (neighborScore < neighborNode.Score)
-			{
-				neighborNode.Update(neighborScore, neighborScore, currentNode);
-			}
-		}
-
-		#endregion
-	}
+        #endregion Methods
+    }
 }

@@ -14,7 +14,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.AStar
         /// </summary>
         public AStarMap() : base() { }
 
-        #endregion
+        #endregion | Constructors |
 
         #region << BaseDijkstraMap >>
 
@@ -32,10 +32,10 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.AStar
         protected override AStarNode OnCreateNode(Vector2 position, AStarNode origin, params object[] arguments)
         {
             Int32 score = arguments != null && arguments.Length > 0 ? (Int32)arguments[0] : 0;
-            Int32 estimatedScore = arguments != null && arguments.Length > 1 ? (Int32) arguments[1] : 0;
+            Int32 estimatedScore = arguments != null && arguments.Length > 1 ? (Int32)arguments[1] : 0;
             return new AStarNode(position, origin, score, estimatedScore);
         }
 
-        #endregion
+        #endregion << BaseDijkstraMap >>
     }
 }

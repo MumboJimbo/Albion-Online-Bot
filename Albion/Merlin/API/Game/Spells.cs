@@ -6,6 +6,11 @@
 
 
 
+
+
+
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +28,7 @@ namespace Merlin.API
 		#region Fields
 
 		private LocalPlayerCharacterView _owner;
-		private adr _internalSpell;
+		private adt _internalSpell;
 		private SpellSlotIndex _slot;
 
 		#endregion
@@ -103,7 +108,7 @@ namespace Merlin.API
 
 		#region Constructors and Cleanup
 		
-		public Spell(LocalPlayerCharacterView owner, adr internalSpell, SpellSlotIndex slot)
+		public Spell(LocalPlayerCharacterView owner, adt internalSpell, SpellSlotIndex slot)
 		{
 			_owner = owner;
 			_internalSpell = internalSpell;

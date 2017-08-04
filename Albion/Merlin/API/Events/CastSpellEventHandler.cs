@@ -6,6 +6,11 @@
 
 
 
+
+
+
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +49,7 @@ namespace Merlin.API
 
 		public bool IsReady(byte index)
 		{
-			return _internalHandler.f(index);
+            return /*_internalHandler.f(index);*/false;
 		}
 
 		#endregion

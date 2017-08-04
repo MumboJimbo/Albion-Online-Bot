@@ -2,12 +2,12 @@
 //  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
 //  KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
 //  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
-//  PURPOSE. IT CAN BE DISTRIBUTED FREE OF CHARGE AS LONG AS THIS HEADER 
+//  PURPOSE. IT CAN BE DISTRIBUTED FREE OF CHARGE AS LONG AS THIS HEADER
 //  REMAINS UNCHANGED.
 //
 //  Email:  gustavo_franco@hotmail.com
 //
-//  Copyright (C) 2006 Franco, Gustavo 
+//  Copyright (C) 2006 Franco, Gustavo
 //
 
 //
@@ -25,7 +25,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
 
         private readonly List<TNode> nodes;
 
-        #endregion
+        #endregion | Fields |
 
         #region | Properties |
 
@@ -34,7 +34,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
             get { return nodes.Count; }
         }
 
-        #endregion
+        #endregion | Properties |
 
         #region | Constructors |
 
@@ -46,7 +46,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
             nodes = new List<TNode>();
         }
 
-        #endregion
+        #endregion | Constructors |
 
         #region | Helper methods |
 
@@ -62,7 +62,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
             return nodes[indexA].CompareTo(nodes[indexB]);
         }
 
-        #endregion
+        #endregion | Helper methods |
 
         #region | Methods |
 
@@ -75,13 +75,13 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
             {
                 if (max == 0) break;
 
-                Int32 half = (max - 1)/2;
+                Int32 half = (max - 1) / 2;
 
                 if (Compare(max, half) >= 0) break;
-                
+
                 SwapNodes(max, half);
                 max = half;
-            } 
+            }
             while (true);
         }
 
@@ -96,16 +96,16 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
             do
             {
                 Int32 pn = p;
-                Int32 p1 = 2*p + 1;
-                Int32 p2 = 2*p + 2;
+                Int32 p1 = 2 * p + 1;
+                Int32 p2 = 2 * p + 2;
 
                 if (nodes.Count > p1 && Compare(p, p1) > 0) p = p1;
-                if (nodes.Count > p2 && Compare(p, p2) > 0)  p = p2;
+                if (nodes.Count > p2 && Compare(p, p2) > 0) p = p2;
 
                 if (p == pn) break;
 
                 SwapNodes(p, pn);
-            } 
+            }
             while (true);
 
             return result;
@@ -119,6 +119,6 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
             nodes.Clear();
         }
 
-        #endregion
+        #endregion | Methods |
     }
 }

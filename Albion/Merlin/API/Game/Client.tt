@@ -30,7 +30,7 @@ namespace Merlin.API
 
 		#region Fields
 
-		private readonly a6i _client;
+		private readonly <#= internalClientType.Name #> _client;
 
 		private readonly World _world;
 		private readonly Collision _collision;
@@ -51,7 +51,7 @@ namespace Merlin.API
         {
             get
             {
-                LocalActorCameraController localActorCameraController = GameObject.FindObjectsOfType<LocalActorCameraController>().FirstOrDefault<LocalActorCameraController>();
+                LocalActorCameraController localActorCameraController = UnityEngine.Object.FindObjectsOfType<LocalActorCameraController>().FirstOrDefault();
                 if (localActorCameraController == null)
                 {
                     return 0f;
@@ -60,7 +60,7 @@ namespace Merlin.API
             }
             set
             {
-                LocalActorCameraController localActorCameraController = GameObject.FindObjectsOfType<LocalActorCameraController>().FirstOrDefault<LocalActorCameraController>();
+                LocalActorCameraController localActorCameraController = UnityEngine.Object.FindObjectsOfType<LocalActorCameraController>().FirstOrDefault();
                 if (localActorCameraController == null)
                 {
                     return;
@@ -111,7 +111,7 @@ namespace Merlin.API
 
 		#region Methods
 
-		public SimulationObjectView GetEntity(are entity) => _client.<#= internalClient_getSimulationObjectViewByEntity.Name #>(entity);
+		public SimulationObjectView GetEntity(arj entity) => _client.<#= internalClient_getSimulationObjectViewByEntity.Name #>(entity);
 
 		public SimulationObjectView GetEntity(long id)
 		{

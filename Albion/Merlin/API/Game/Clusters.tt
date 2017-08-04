@@ -82,7 +82,7 @@ namespace Merlin.API
 
 		public bool IsRestricted => _clusterExit.u();
 
-		public akc.Kind Kind => _clusterExit.r();
+		public <#= internalClusterExitType.Name #>.Kind Kind => _clusterExit.r();
 
 		public <#= internalClusterExitType.Name #> Internal => _clusterExit;
 

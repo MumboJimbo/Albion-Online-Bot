@@ -51,7 +51,7 @@
 	}
 
 	/* Client */
-	var internalClientType = typeof(a6i);
+	var internalClientType = typeof(a6n);
 	var internalClient_getInstance = GetStaticMethod(internalClientType, m => m.ReturnType.IsEquivalentTo(internalClientType));
 	var internalClient_getState = GetMethod(internalClientType, "w");
 	var internalClient_getLocalPlayerCharacterView = GetMethod(internalClientType, "v");
@@ -64,22 +64,20 @@
 	}).FirstOrDefault();
 
 	/* World */
-	var internalWorldType = typeof(ak8);
+	var internalWorldType = typeof(ala);
 	var internalWorld_getInstance = GetStaticMethod(internalWorldType, m => m.ReturnType.IsEquivalentTo(internalWorldType));
-	var internalWorld_getEntities = GetMethod(internalWorldType, "ab");
-	var internalWorld_getEntitiesOfType = GetMethod(internalWorldType, "ap");
 
 	var internalClusterType = GetMethod(typeof(WorldMap.Worldmap), "IsWorldmapCluster").GetParameters()[0].ParameterType;
-	var internalClusterExitType = typeof(akc);
+	var internalClusterExitType = typeof(ake);
 	var internalWorld_getCurrentCluster = GetMethodWhere(internalWorldType, m => m.ReturnType.IsEquivalentTo(internalClusterType));
 
 	
 
 	/* Landscape */
-	var internalLandscapeType = typeof(aog);
-	var internalLandscape_getInstance = GetMethodWhere(internalWorldType, m => m.ReturnType.IsEquivalentTo(internalLandscapeType));
+	var internalLandscapeType = typeof(a6k);
+	var internalLandscape_getInstance = GetMethodWhere(internalClientType, m => m.ReturnType.IsEquivalentTo(internalLandscapeType));
 
-	var internalCollisionType = typeof(ad1);
+	var internalCollisionType = typeof(ad3);
 	var internalCollision_getInstance = GetMethodWhere(internalWorldType, m => m.ReturnType.IsEquivalentTo(internalCollisionType));
 
 	/* Internal Entities */
@@ -94,7 +92,7 @@
 
 	var internalHarvestType = typeof(HarvestableObjectView).GetProperty("HarvestableObject").PropertyType;
 
-	var internalitemType = typeof(ark);
+	var internalitemType = typeof(arp);
 
 	/* Events */
 	var internalEventHandlerType = GetField(internalFightingType, "ba").FieldType.GetGenericArguments()[1];
@@ -103,6 +101,6 @@
 	var internalLocalPlayerCharacterViewType = typeof(LocalPlayerCharacterView).GetProperty("LocalPlayerCharacter").PropertyType;
 
 	/* */
-	var internalSpellType = typeof(adr);
+	var internalSpellType = typeof(adt);
 	var internalSpellConfigurationType = typeof(gz);
 #>

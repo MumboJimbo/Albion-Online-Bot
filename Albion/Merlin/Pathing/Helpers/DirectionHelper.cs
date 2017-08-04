@@ -23,7 +23,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.Helpers
 
             return new Vector2(x, y);
         }
-		
+
         public static IEnumerable<DirectionType> GetValues(Boolean allowDiagonals = true)
         {
             yield return DirectionType.North;

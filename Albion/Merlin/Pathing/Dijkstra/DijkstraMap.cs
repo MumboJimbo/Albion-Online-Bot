@@ -12,7 +12,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.Dijkstra
         /// </summary>
         public DijkstraMap() : base() { }
 
-        #endregion
+        #endregion | Constructors |
 
         #region << BaseDijkstraMap >>
 
@@ -33,6 +33,6 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.Dijkstra
             return new DijkstraNode(position, origin, score);
         }
 
-        #endregion
+        #endregion << BaseDijkstraMap >>
     }
 }

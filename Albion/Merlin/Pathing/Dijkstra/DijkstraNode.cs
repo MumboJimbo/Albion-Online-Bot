@@ -12,7 +12,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.Dijkstra
         /// </summary>
         public Int32 Score { get; private set; }
 
-        #endregion
+        #endregion | Properites |
 
         #region | Constructors |
 
@@ -27,7 +27,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.Dijkstra
             Score = score;
         }
 
-        #endregion
+        #endregion | Constructors |
 
         #region | Methods |
 
@@ -42,7 +42,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.Dijkstra
             Origin = parent;
         }
 
-        #endregion
+        #endregion | Methods |
 
         #region << Object >>
 
@@ -57,7 +57,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.Dijkstra
             return string.Format("X = {0}, Y = {1}, Score = {2}", Value.x, Value.y, Score);
         }
 
-        #endregion
+        #endregion << Object >>
 
         #region << IComparable >>
 
@@ -69,6 +69,6 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.Dijkstra
             return Score.CompareTo(other.Score);
         }
 
-        #endregion
+        #endregion << IComparable >>
     }
 }

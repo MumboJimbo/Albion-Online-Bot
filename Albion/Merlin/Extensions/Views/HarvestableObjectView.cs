@@ -6,6 +6,11 @@
 
 
 
+
+
+
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,7 +63,7 @@ namespace Merlin
 			return true;
 		}
 
-		public static ark GetTool(this HarvestableObjectView instance, LocalPlayerCharacterView player)
+		public static arp GetTool(this HarvestableObjectView instance, LocalPlayerCharacterView player)
 		{
 			return instance.HarvestableObject.az(player.LocalPlayerCharacter, true);
 		}

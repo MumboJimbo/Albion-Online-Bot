@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using WorldMap;
 
@@ -10,87 +7,81 @@ using YinYang.CodeProject.Projects.SimplePathfinding.PathFinders;
 
 namespace Merlin.Pathing.Worldmap
 {
-	public class WorldmapMap : BaseGraphSearchMap<WorldmapNode, WorldmapCluster>
-	{
-		#region Static
+    public class WorldmapMap : BaseGraphSearchMap<WorldmapNode, WorldmapCluster>
+    {
+        #region Fields
 
-		#endregion
+        private readonly PriorityQueue<WorldmapNode> priorityQueue;
 
-		#region Fields
+        #endregion Fields
 
-		private readonly PriorityQueue<WorldmapNode> priorityQueue;
 
-		#endregion
 
-		#region Properties and Events
+        #region Constructors and Cleanup
 
-		#endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorldmapMap{TNode}"/> class.
+        /// </summary>
+        public WorldmapMap() : base()
+        {
+            priorityQueue = new PriorityQueue<WorldmapNode>();
+        }
 
-		#region Constructors and Cleanup
+        #endregion Constructors and Cleanup
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="WorldmapMap{TNode}"/> class.
-		/// </summary>
-		public WorldmapMap() : base()
-		{
-			priorityQueue = new PriorityQueue<WorldmapNode>();
-		}
+        #region Methods
 
-		#endregion
+        /// <summary>
+        /// See <see cref="BaseGraphSearchMap{TNode}.OnCreateFirstNode"/> for more details.
+        /// </summary>
+        protected override WorldmapNode OnCreateFirstNode(WorldmapCluster startPosition, WorldmapCluster endPosition)
+        {
+            return new WorldmapNode(startPosition, null, 0, 0);
+        }
 
-		#region Methods
+        /// <summary>
+        /// See <see cref="BaseGraphSearchMap{TNode}.OnCreateNode"/> for more details.
+        /// </summary>
+        protected override WorldmapNode OnCreateNode(WorldmapCluster position, WorldmapNode origin, params object[] arguments)
+        {
+            Int32 score = arguments != null && arguments.Length > 0 ? (Int32)arguments[0] : 0;
+            Int32 estimatedScore = arguments != null && arguments.Length > 1 ? (Int32)arguments[1] : 0;
 
-		/// <summary>
-		/// See <see cref="BaseGraphSearchMap{TNode}.OnCreateFirstNode"/> for more details.
-		/// </summary>
-		protected override WorldmapNode OnCreateFirstNode(WorldmapCluster startPosition, WorldmapCluster endPosition)
-		{
-			return new WorldmapNode(startPosition, null, 0, 0);
-		}
+            return new WorldmapNode(position, origin, score, estimatedScore);
+        }
 
-		/// <summary>
-		/// See <see cref="BaseGraphSearchMap{TNode}.OnCreateNode"/> for more details.
-		/// </summary>
-		protected override WorldmapNode OnCreateNode(WorldmapCluster position, WorldmapNode origin, params object[] arguments)
-		{
-			Int32 score = arguments != null && arguments.Length > 0 ? (Int32)arguments[0] : 0;
-			Int32 estimatedScore = arguments != null && arguments.Length > 1 ? (Int32)arguments[1] : 0;
+        /// <summary>
+        /// See <see cref="BaseGraphSearchMap{TNode}.OnGetCount"/> for more details.
+        /// </summary>
+        protected override Int32 OnGetCount()
+        {
+            return priorityQueue.Count;
+        }
 
-			return new WorldmapNode(position, origin, score, estimatedScore);
-		}
+        /// <summary>
+        /// See <see cref="BaseGraphSearchMap{TNode}.OnAddNewNode"/> for more details.
+        /// </summary>
+        protected override void OnAddNewNode(WorldmapNode result)
+        {
+            priorityQueue.Enqueue(result);
+        }
 
-		/// <summary>
-		/// See <see cref="BaseGraphSearchMap{TNode}.OnGetCount"/> for more details.
-		/// </summary>
-		protected override Int32 OnGetCount()
-		{
-			return priorityQueue.Count;
-		}
+        /// <summary>
+        /// See <see cref="BaseGraphSearchMap{TNode}.OnGetTopNode"/> for more details.
+        /// </summary>
+        protected override WorldmapNode OnGetTopNode()
+        {
+            return priorityQueue.Dequeue();
+        }
 
-		/// <summary>
-		/// See <see cref="BaseGraphSearchMap{TNode}.OnAddNewNode"/> for more details.
-		/// </summary>
-		protected override void OnAddNewNode(WorldmapNode result)
-		{
-			priorityQueue.Enqueue(result);
-		}
+        /// <summary>
+        /// See <see cref="BaseGraphSearchMap{TNode}.OnClear"/> for more details.
+        /// </summary>
+        protected override void OnClear()
+        {
+            priorityQueue.Clear();
+        }
 
-		/// <summary>
-		/// See <see cref="BaseGraphSearchMap{TNode}.OnGetTopNode"/> for more details.
-		/// </summary>
-		protected override WorldmapNode OnGetTopNode()
-		{
-			return priorityQueue.Dequeue();
-		}
-
-		/// <summary>
-		/// See <see cref="BaseGraphSearchMap{TNode}.OnClear"/> for more details.
-		/// </summary>
-		protected override void OnClear()
-		{
-			priorityQueue.Clear();
-		}
-
-		#endregion
-	}
+        #endregion Methods
+    }
 }

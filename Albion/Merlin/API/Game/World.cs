@@ -6,6 +6,11 @@
 
 
 
+
+
+
+
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +21,7 @@ using WorldMap;
 
 namespace Merlin.API
 {
-	/* Internal Type: ak8 */
+	/* Internal Type: ala */
 	public class World
 	{
 		#region Static
@@ -25,7 +30,7 @@ namespace Merlin.API
 		{
 			get 
 			{ 
-				var internalWorld = ak8.a();
+				var internalWorld = ala.a();
 
 				if (internalWorld != null)
 					return new World(internalWorld);
@@ -39,7 +44,7 @@ namespace Merlin.API
 
 		static World()
 		{
-			_getEntitiesCollection = typeof(ak8).GetMethod("ai", BindingFlags.NonPublic | BindingFlags.Instance);
+			_getEntitiesCollection = typeof(ala).GetMethod("ai", BindingFlags.NonPublic | BindingFlags.Instance);
 			_getWorldmapClusters = typeof(Worldmap).GetField("c", BindingFlags.NonPublic | BindingFlags.Instance);
 		}
 
@@ -47,7 +52,7 @@ namespace Merlin.API
 
 		#region Fields
 
-		private ak8 _internal;
+		private ala _internal;
 
 		#endregion
 
@@ -59,7 +64,7 @@ namespace Merlin.API
 
 		#region Constructors and Cleanup
 
-		protected World(ak8 world)
+		protected World(ala world)
 		{
 			_internal = world;
 		}
@@ -68,9 +73,9 @@ namespace Merlin.API
 
 		#region Methods
 
-		public Dictionary<long, are> GetEntities() 
+		public Dictionary<long, arj> GetEntities() 
 		{
-			return _getEntitiesCollection.Invoke(_internal, new object[] { }) as Dictionary<long, are>;
+			return _getEntitiesCollection.Invoke(_internal, new object[] { }) as Dictionary<long, arj>;
 		}
 
 		public Dictionary<string, WorldmapCluster> GetClusters()
@@ -78,7 +83,7 @@ namespace Merlin.API
 			return _getWorldmapClusters.GetValue(GameGui.Instance.WorldMap) as Dictionary<string, WorldmapCluster>;
 		}
 
-		public WorldmapCluster GetCluster(akb info)
+		public WorldmapCluster GetCluster(akd info)
 		{
 			var clusters = GetClusters();
 
@@ -94,7 +99,8 @@ namespace Merlin.API
 
 			foreach (var cluster in clusters.Values)
 			{
-				if (cluster.Info.ak().ToLower() == name.ToLower())
+                //NOTE: Be sure about this (this is just a guess, because it worked in previous version), if correct, modify values in Clusters.tt
+				if (cluster.Info.an().ToLower() == name.ToLower())
 					return cluster;
 			}
 

@@ -6,6 +6,11 @@
 
 
 
+
+
+
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +28,7 @@ namespace Merlin
 
 		static FightingObjectViewExtensions()
 		{
-			_getEventHandler = typeof(ar9).GetMethod("xm");
+			_getEventHandler = typeof(ase).GetMethod("xm");
 		}
 
 		public static FightingObjectView GetAttackTarget(this FightingObjectView instance)
@@ -46,7 +51,7 @@ namespace Merlin
 			return instance.FightingObject.ir();
 		}
 
-		public static T GetEventHandler<T>(this FightingObjectView instance) where T : asa
+		public static T GetEventHandler<T>(this FightingObjectView instance) where T : asf
 		{
 			return _getEventHandler.MakeGenericMethod(new Type[] { typeof(T) })
 									.Invoke(instance.FightingObject, new object[0]) as T;

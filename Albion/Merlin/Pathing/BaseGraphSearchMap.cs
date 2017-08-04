@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using YinYang.CodeProject.Projects.SimplePathfinding.PathFinders.AStar;
 
 namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
 {
@@ -11,7 +9,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
 
         private Dictionary<TValue, TNode> nodes;
 
-        #endregion
+        #endregion | Fields |
 
         #region | Properties |
 
@@ -23,12 +21,12 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
             get { return OnGetCount(); }
         }
 
-	    public Dictionary<TValue, TNode> Nodes
-	    {
-			get { return nodes; }
-	    }
+        public Dictionary<TValue, TNode> Nodes
+        {
+            get { return nodes; }
+        }
 
-        #endregion
+        #endregion | Properties |
 
         #region | Indexers |
 
@@ -40,7 +38,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
             get { return nodes[value]; }
         }
 
-        #endregion
+        #endregion | Indexers |
 
         #region | Constructors |
 
@@ -49,10 +47,10 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
         /// </summary>
         protected BaseGraphSearchMap()
         {
-	        nodes = new Dictionary<TValue, TNode>();
+            nodes = new Dictionary<TValue, TNode>();
         }
 
-        #endregion
+        #endregion | Constructors |
 
         #region | Helper methods |
 
@@ -62,19 +60,23 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
             OnAddNewNode(result);
         }
 
-        #endregion
+        #endregion | Helper methods |
 
         #region | Virtual/abstract methods |
 
         protected abstract TNode OnCreateFirstNode(TValue startPosition, TValue endPosition);
+
         protected abstract TNode OnCreateNode(TValue position, TNode origin, params object[] arguments);
 
         protected abstract Int32 OnGetCount();
+
         protected abstract void OnAddNewNode(TNode result);
+
         protected abstract TNode OnGetTopNode();
+
         protected abstract void OnClear();
 
-        #endregion
+        #endregion | Virtual/abstract methods |
 
         #region | Methods |
 
@@ -100,7 +102,7 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
         /// <returns></returns>
         public TNode CreateEmptyNode(TValue position)
         {
-            return OnCreateNode(position, null); 
+            return OnCreateNode(position, null);
         }
 
         /// <summary>
@@ -123,6 +125,6 @@ namespace YinYang.CodeProject.Projects.SimplePathfinding.PathFinders
             OnClear();
         }
 
-        #endregion
+        #endregion | Methods |
     }
 }
