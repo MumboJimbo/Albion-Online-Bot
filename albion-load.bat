@@ -6,7 +6,7 @@ SET AssemblyName=Merlin
 SET Target=Albion-Online.exe
 
 SET LoadingAssembly=%AssemblyPath%\%AssemblyName%.dll
-SET UnloadAssembly=%AssemblyPath%\unload\%AssemblyName%.dll
+SET UnloadAssembly=%AssemblyPath%\%AssemblyName%-unload.dll
 
 echo Unloading
 if exist %UnloadAssembly% mono-assembly-injector -dll %UnloadAssembly% -target %Target% -namespace %AssemblyName% -class Core -method Unload
