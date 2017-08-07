@@ -213,7 +213,7 @@ namespace Merlin
         /// </summary>
         /// <param name="instance"> LocalPlayerCharacterview</param>
         /// <returns></returns>
-		public static List<lf> GetInventoryItems(this LocalPlayerCharacterView instance)
+		public static List<<#= internalItem #>> GetInventoryItems(this LocalPlayerCharacterView instance)
 	    {
 	        return instance.LocalPlayerCharacter.sl().eg().dv().ToList();
 	    }
