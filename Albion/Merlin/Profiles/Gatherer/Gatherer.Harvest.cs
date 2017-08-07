@@ -19,7 +19,7 @@ namespace Merlin.Profiles.Gatherer
 
         public bool ValidateHarvestable(HarvestableObjectView resource)
         {                       
-            if (!resource.CanLoot(_localPlayerCharacterView) || resource.GetCurrentCharges() <= 0 || resource.GetTier() < _minimumHarvestableTier || toolDurability <= 10)
+            if (!resource.CanLoot(_localPlayerCharacterView) || resource.GetCurrentCharges() <= 0 || resource.GetTier() < _minimumHarvestableTier)
                 return false;
 
             var position = resource.transform.position;
