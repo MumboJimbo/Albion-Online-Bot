@@ -1,4 +1,16 @@
-﻿using System;
+﻿
+
+
+
+
+
+
+
+
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -207,6 +219,11 @@ namespace Merlin
 			return instance.GetLoad() / instance.GetMaxLoad() * 100.0f * 2f;
 		}
 
+	    /// <summary>
+        /// Return a list with all inventory items.
+        /// </summary>
+        /// <param name="instance"> LocalPlayerCharacterview</param>
+        /// <returns></returns>
 		public static List<lf> GetInventoryItems(this LocalPlayerCharacterView instance)
 	    {
 	        return instance.LocalPlayerCharacter.sl().eg().dv().ToList();
